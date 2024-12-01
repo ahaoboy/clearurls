@@ -4,6 +4,7 @@
 		"useDefineForClassFields": true,
 		"lib": ["ESNext", "ES2022", "es2021", "DOM"],
 		"allowJs": true,
+    "checkJs": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"strict": true,
@@ -21,5 +22,5 @@
 		"declarationMap": false,
 		"sourceMap": false
 	},
-	"exclude": ["*.js", "dist"]
+	"exclude": ["*.js", "dist", "assets", "lib"]
 }

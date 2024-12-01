@@ -16,7 +16,7 @@ build({
     const jsPath = "./dist/clearurls.user.js"
     const s = fs.readFileSync(jsPath, 'utf8');
 
-    const metaPath = "./meta.js"
+    const metaPath = "./assets/meta.js"
     const meta = fs.readFileSync(metaPath, 'utf8');
     fs.writeFileSync(jsPath, [meta, s].join("\n\n"))
   })

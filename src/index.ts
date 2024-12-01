@@ -1,18 +1,5 @@
-import DATA from './data.min.json'
-type Rule = {
-  "urlPattern": string,
-  "completeProvider": boolean,
-  "rules": string[],
-  "referralMarketing": string[],
-  "exceptions": string[],
-  "rawRules": string[],
-  "redirections": string[],
-  "forceRedirection": boolean
-}
-
-type Data = {
-  providers: Record<string, Rule>
-}
+import DATA from '../lib'
+import type { Data, Rule } from '../lib'
 
 
 function getRules(data: Data, href: string): Rule[] {
@@ -39,8 +26,7 @@ function applyRule(rule: Rule, href: string): string {
 
 function clean() {
   const href = location.href
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const rules = getRules(DATA as any, href);
+  const rules = getRules(DATA, href);
   let cleaned = href;
   for (const rule of rules) {
     cleaned = applyRule(rule, cleaned)
