@@ -4,6 +4,9 @@
   "description": "clearurls",
   "main": "./lib/index.js",
   "types": "./lib/index.d.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "update:data": "tsx ./scripts/update.ts",
     "build": "tsx ./scripts/build.ts"
