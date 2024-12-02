@@ -1,11 +1,12 @@
 {
   "name": "clearurls",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "clearurls",
   "main": "./lib/index.js",
   "types": "./lib/index.d.js",
   "files": [
-    "lib"
+    "lib",
+    "dist"
   ],
   "scripts": {
     "update:data": "tsx ./scripts/update.ts",

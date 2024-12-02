@@ -1,24 +1,33 @@
 import DATA from '../lib'
 import type { Data, Rule } from '../lib'
 
+function regTest(reg: string, s: string): boolean {
+  return new RegExp(reg).test(s)
+}
 
 function getRules(data: Data, href: string): Rule[] {
   return Object.values(data.providers).filter(rule => {
-    return !rule.exceptions.some(i => new RegExp(i).test(href)) && new RegExp(rule.urlPattern).test(href)
+    return !rule.exceptions.some(i => regTest(i, href)) && regTest(rule.urlPattern, href)
   })
 }
-
 
 function applyRule(rule: Rule, href: string): string {
   const url = new URL(href)
 
-  for (const param of rule.rules.map(i => new RegExp(i))) {
-    url.searchParams.forEach((_, name) => {
-      if (param.test(name)) {
+  for (const name of [...url.searchParams.keys()]) {
+    for (const param of rule.rules) {
+      if (rule.referralMarketing.includes(param)) {
+        continue
+      }
+      if (regTest(param, name)) {
         url.searchParams.delete(name);
       }
-    })
-  };
+    };
+
+    for (const raw of rule.rawRules) {
+      url.href = url.href.replace(new RegExp(raw), '')
+    }
+  }
 
   return url.href
 }
@@ -30,6 +39,9 @@ function clean() {
   let cleaned = href;
   for (const rule of rules) {
     cleaned = applyRule(rule, cleaned)
+    if (rule.completeProvider) {
+      break
+    }
   }
 
   if (cleaned !== href) {
