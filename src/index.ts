@@ -1,57 +1,15 @@
-import DATA from '../lib'
-import type { Data, Rule } from '../lib'
+import { clean } from './tool';
 
-function regTest(reg: string, s: string): boolean {
-  return new RegExp(reg).test(s)
-}
-
-function getRules(data: Data, href: string): Rule[] {
-  return Object.values(data.providers).filter(rule => {
-    return !rule.exceptions.some(i => regTest(i, href)) && regTest(rule.urlPattern, href)
-  })
-}
-
-function applyRule(rule: Rule, href: string): string {
-  const url = new URL(href)
-
-  for (const name of [...url.searchParams.keys()]) {
-    for (const param of rule.rules) {
-      if (rule.referralMarketing.includes(param)) {
-        continue
-      }
-      if (regTest(param, name)) {
-        url.searchParams.delete(name);
-      }
-    };
-
-    for (const raw of rule.rawRules) {
-      url.href = url.href.replace(new RegExp(raw), '')
-    }
-  }
-
-  return url.href
-}
-
-
-function clean() {
+export function main() {
   const href = location.href
-  const rules = getRules(DATA, href);
-  let cleaned = href;
-  for (const rule of rules) {
-    cleaned = applyRule(rule, cleaned)
-    if (rule.completeProvider) {
-      break
-    }
-  }
+  const cleaned = clean(href);
 
   if (cleaned !== href) {
     // window.location.replace(cleaned);
     window.history.replaceState(window.history.state, "", cleaned);
-
   }
 }
-
-clean()
+main()
 
 // https://stackoverflow.com/questions/6390341/how-to-detect-if-url-has-changed-after-hash-in-javascript
 const oldPushState = history.pushState;
@@ -83,5 +41,5 @@ for (const eventName of [
   "pushstate"
 ]) {
   // @ts-ignore
-  window.addEventListener(eventName, clean);
+  window.addEventListener(eventName, main);
 }

@@ -9,8 +9,13 @@
     "dist"
   ],
   "scripts": {
+    "format": "biome format --write  ./",
+    "lint:fix": "biome lint ./ --write --unsafe",
     "update:data": "tsx ./scripts/update.ts",
-    "build": "tsx ./scripts/build.ts"
+    "build": "tsx ./scripts/build.ts",
+    "test": "vitest",
+    "test:run": "vitest --run"
+
   },
   "keywords": [
     "clearurls"
@@ -18,9 +23,11 @@
   "author": "ahaoboy <504595380@qq.com> (https://github.com/ahaoboy)",
   "homepage": "https://github.com/ahaoboy/clearurls",
   "devDependencies": {
+    "@biomejs/biome": "1.9.3",
     "@types/node": "^22.10.1",
     "esbuild": "^0.24.0",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.6"
   }
 }
