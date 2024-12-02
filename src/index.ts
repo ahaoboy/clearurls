@@ -1,15 +1,25 @@
-import { clean } from './tool';
+import { clean, isLocal } from './tool';
 
-export function main() {
+function replaceUrl(href: string) {
+  // window.location.replace(cleaned);
+  window.history.replaceState(window.history.state, "", href);
+}
+
+export function check() {
   const href = location.href
+
+  if (isLocal(href)) {
+    return
+  }
+
   const cleaned = clean(href);
 
   if (cleaned !== href) {
-    // window.location.replace(cleaned);
-    window.history.replaceState(window.history.state, "", cleaned);
+    replaceUrl(cleaned)
   }
 }
-main()
+
+check()
 
 // https://stackoverflow.com/questions/6390341/how-to-detect-if-url-has-changed-after-hash-in-javascript
 const oldPushState = history.pushState;
@@ -41,5 +51,5 @@ for (const eventName of [
   "pushstate"
 ]) {
   // @ts-ignore
-  window.addEventListener(eventName, main);
+  window.addEventListener(eventName, check);
 }
